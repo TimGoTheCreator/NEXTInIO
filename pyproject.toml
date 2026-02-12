@@ -1,0 +1,12 @@
+[project]
+name = "nextinio"
+version = "0.1.1"
+description = "A library to utilize NEXT I/O"
+authors = [{ name="Timofey Zakharchuk" }]
+readme = "README.md"
+license = { text = "LGPL-3.0-or-later" }
+dependencies = ["meshio", "h5py", "numpy"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"

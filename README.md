@@ -1,2 +1,4 @@
-# NEXTInIO
-A library to convert VTK to gadget-style HDF5 and analyze NEXT data.
+# NextInIO
+
+NEXTInIO Is a python library to utilize NEXT data, 
+This project is licensed under the GNU Lesser General Public License v3.0 (LGPL-3.0-or-later). 
