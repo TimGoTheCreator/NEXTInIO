@@ -1,19 +1,23 @@
-import meshio
+import vtk
+import numpy as np
+from vtk.util.numpy_support import vtk_to_numpy
 
-def read_vtk_file(filename=None):
-    if filename is None:
-        return None
+def read_vtk_file(filename):
+    reader = vtk.vtkPolyDataReader()
+    reader.SetFileName(filename)
+    reader.Update()
+    polydata = reader.GetOutput()
 
-    mesh = meshio.read(filename)
-
-    # If POLYDATA, convert to unstructured grid with vertex cells
-    if mesh.cells and any(c.type == "vertex" for c in mesh.cells):
-        cells = [("vertex", np.arange(len(mesh.points)).reshape(-1, 1))]
-        mesh = meshio.Mesh(points=mesh.points, cells=cells, point_data=mesh.point_data)
+    points = np.array([polydata.GetPoint(i) for i in range(polydata.GetNumberOfPoints())])
+    velocity = vtk_to_numpy(polydata.GetPointData().GetArray("velocity"))
+    mass = vtk_to_numpy(polydata.GetPointData().GetArray("mass"))
+    ptype = vtk_to_numpy(polydata.GetPointData().GetArray("type"))
 
     return {
-        "points": mesh.points,
-        "cells": mesh.cells,
-        "point_data": mesh.point_data,
-        "cell_data": mesh.cell_data,
+        "points": points,
+        "point_data": {
+            "velocity": velocity,
+            "mass": mass,
+            "type": ptype
+        }
     }
